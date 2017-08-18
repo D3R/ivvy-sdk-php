@@ -14,5 +14,8 @@
             "name": "Christopher Francisco",
             "email": "christopher.f.almanza@gmail.com"
         }
-    ]
+    ],
+    "scripts": {
+        "test": "phpunit --testdox"
+    }
 }
