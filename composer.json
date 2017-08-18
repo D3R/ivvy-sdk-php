@@ -1,0 +1,18 @@
+{
+    "name": "fundacion-ciudad-del-saber/ivvy-sdk-php",
+    "description": "A PSR-4 compilant SDK to work with iVvy's API 1.0",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Francisco",
+            "email": "christopher.f.almanza@gmail.com"
+        }
+    ]
+}
