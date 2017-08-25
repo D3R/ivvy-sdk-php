@@ -15,7 +15,17 @@
             "email": "christopher.f.almanza@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Fcds\\Ivvy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fcds\\IvvyTest\\": "tests/"
+        }
+    },
     "scripts": {
-        "test": "phpunit --testdox"
+        "test": "phpunit"
     }
 }
