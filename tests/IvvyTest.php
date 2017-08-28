@@ -14,7 +14,7 @@ use GuzzleHttp\Client;
  *
  * @see BaseTestCase
  * @final
- * @covers Ivvy
+ * @covers Fcds\Ivvy\Ivvy
  */
 final class IvvyTest extends BaseTestCase
 {

@@ -11,7 +11,7 @@ use Fcds\IvvyTest\BaseTestCase;
  *
  * @see BaseTestCase
  * @final
- * @covers Signature
+ * @covers Fcds\Ivvy\Signature
  */
 final class SignatureTest extends BaseTestCase
 {
