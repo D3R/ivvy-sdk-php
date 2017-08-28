@@ -29,6 +29,6 @@
     "scripts": {
         "test": "phpunit tests",
         "test-coverage": "phpunit tests --coverage-text --whitelist=src",
-        "lint": "phpcs --standard=PSR2 src tests"
+        "lint": "phpcs -p --standard=PSR2 src tests"
     }
 }

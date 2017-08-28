@@ -74,7 +74,6 @@ final class IvvyTest extends BaseTestCase
         $result = $this->ivvy->ping();
 
         $this->assertFalse($result);
-
     }
 
     public function testBatchRunSuccess()
@@ -98,8 +97,10 @@ final class IvvyTest extends BaseTestCase
      * @param int $statusCode
      * @param mixed $body
      */
-    private function generateStubResponse(int $statusCode = 200, $body = null) {
-        return new class($statusCode, $body) {
+    private function generateStubResponse(int $statusCode = 200, $body = null)
+    {
+        return new class($statusCode, $body)
+        {
             public function __construct(int $statusCode, $body)
             {
                 $this->statusCode = $statusCode;
