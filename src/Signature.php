@@ -3,22 +3,21 @@ namespace Fcds\Ivvy;
 
 /**
  * Class: Signature
- * 
+ *
  * Signs the IWS string based on the parameters
  */
 class Signature
 {
     public function sign(
-        string $apiSecret, 
-        string $contentMd5, 
-        string $requestUri, 
+        string $apiSecret,
+        string $contentMd5,
+        string $requestUri,
         array $ivvyHeaders = [],
         string $date = '',
         string $method = 'POST',
         string $contentType = 'application/json',
         string $apiVersion = '1.0'
-    ): string
-    {
+    ): string {
         $parsedHeaders = $this->parseHeaders($ivvyHeaders);
 
         $stringToSign = implode(
