@@ -4,7 +4,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $apiKey = $argv[1];
 $apiSecret = $argv[2];
 
-$ivvy = Fcds\Ivvy\Ivvy::getInstance($apiKey, $apiSecret);
+$ivvy = (new Fcds\Ivvy\IvvyFactory)->newInstance($apiKey, $apiSecret);
 
 if ($ivvy->ping()) {
     echo "Connection successful\n";

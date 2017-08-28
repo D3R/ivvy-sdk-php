@@ -5,6 +5,7 @@ namespace Fcds\IvvyTest;
 
 use Error;
 use Fcds\Ivvy\Ivvy;
+use Fcds\Ivvy\Job;
 use Fcds\Ivvy\Signature;
 use Fcds\IvvyTest\BaseTestCase;
 use GuzzleHttp\Client;
@@ -38,7 +39,7 @@ final class IvvyTest extends BaseTestCase
             ->method('sign')
             ->willReturn('baz');
 
-        $this->ivvy = Ivvy::getInstance(
+        $this->ivvy = new Ivvy(
             $this->apiKey,
             $this->apiSecret,
             $this->signatureMock,
@@ -74,6 +75,20 @@ final class IvvyTest extends BaseTestCase
 
         $this->assertFalse($result);
 
+    }
+
+    public function testBatchRunSuccess()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode(['asyncId' => 'foo'])));
+
+        $job1 = $this->createMock(Job::class);
+        $job2 = $this->createMock(Job::class);
+
+        $result = $this->ivvy->run([$job1, $job2]);
+
+        $this->assertEquals('foo', $result);
     }
 
     /**
