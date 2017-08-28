@@ -12,7 +12,7 @@ use Fcds\IvvyTest\BaseTestCase;
  * @see BaseTestCase
  * @covers Fcds\Ivvy\PingJob
  */
-class PingJobTest extends BaseTestCase
+final class PingJobTest extends BaseTestCase
 {
     /** @var PingJob */
     protected $pingJob;
