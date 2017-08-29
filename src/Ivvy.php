@@ -66,7 +66,7 @@ final class Ivvy
      * @param array $jobs
      * @return string - the async Id
      */
-    public function run(array $jobs)
+    public function run(array $jobs): ?string
     {
         $requestUri = $this->createRequestUri('batch', 'run');
         $body = json_encode([
@@ -83,9 +83,13 @@ final class Ivvy
 
         $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
 
-        $json = json_decode((string) $response->getBody());
+        if ($response->getStatusCode() === 200) {
+            $json = json_decode((string) $response->getBody());
 
-        return $json->asyncId;
+            return $json->asyncId;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -111,7 +115,7 @@ final class Ivvy
      *
      * @return array
      */
-    protected function createHeaders(string $body, string $requestUri)
+    protected function createHeaders(string $body, string $requestUri): array
     {
         $contentType = 'application/json';
         $contentMd5 = md5($body);

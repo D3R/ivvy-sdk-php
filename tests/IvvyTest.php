@@ -47,14 +47,7 @@ final class IvvyTest extends BaseTestCase
         );
     }
 
-    public function testCannotBeInstantiated()
-    {
-        $this->expectException(Error::class);
-
-        new Ivvy();
-    }
-
-    public function testPingSuccess()
+    public function testPingSuccess(): void
     {
         $this->clientMock
             ->method('request')
@@ -65,7 +58,7 @@ final class IvvyTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
-    public function testPingFailure()
+    public function testPingFailure(): void
     {
          $this->clientMock
             ->method('request')
@@ -76,7 +69,7 @@ final class IvvyTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
-    public function testBatchRunSuccess()
+    public function testBatchRunSuccess(): void
     {
         $this->clientMock
             ->method('request')
@@ -88,6 +81,20 @@ final class IvvyTest extends BaseTestCase
         $result = $this->ivvy->run([$job1, $job2]);
 
         $this->assertEquals('foo', $result);
+    }
+
+    public function testBatchRunFailure(): void
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $job1 = $this->createMock(Job::class);
+        $job2 = $this->createMock(Job::class);
+
+        $result = $this->ivvy->run([$job1, $job2]);
+
+        $this->assertNull($result);
     }
 
     /**
