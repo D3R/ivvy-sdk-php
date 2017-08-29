@@ -51,7 +51,7 @@ final class Ivvy
     {
         $requestUri = $this->createRequestUri('test', 'ping');
 
-        $body = json_encode(['example' => 'body']);                // TODO: change to a blank body if supported
+        $body = json_encode([]);
 
         $headers = $this->createHeaders($body, $requestUri);
 
