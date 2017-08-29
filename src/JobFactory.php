@@ -33,6 +33,20 @@ final class JobFactory
             throw new InvalidArgumentException('Cannot add a Company that already has an id');
         }
 
+        return $this->newAddOrUpdateCompanyJob($company);
+    }
+
+    public function newUpdateCompanyJob(Company $company)
+    {
+        if (! $company->id) {
+            throw new InvalidArgumentException('An id is needed to update a Company');
+        }
+
+        return $this->newAddOrUpdateCompanyJob($company);
+    }
+
+    protected function newAddOrUpdateCompanyJob(Company $company)
+    {
         return new Job('contact', 'addOrUpdateCompany', $company->toArray());
     }
 }

@@ -79,4 +79,35 @@ final class JobFactoryTest extends BaseTestCase
 
         $this->factory->newAddCompanyJob($company);
     }
+
+    public function testCanCreateUpdateCompanyJob()
+    {
+        $expectedArray = [
+            'namespace' => 'contact', // see page 28 and 29 from the API PDF.
+            'action' => 'addOrUpdateCompany',
+            'params' => [
+                'id' => 100,
+            ],
+        ];
+
+        $company = new Company([
+            'id' => 100,
+            'businessName' => 'Acme',
+        ]);
+
+        $result = $this->factory->newUpdateCompanyJob($company);
+
+        $this->assertArraySubset($expectedArray, $result->toArray());
+    }
+
+    public function testWillNotCreateUpdateCompanyJobWithNoId()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $company = new Company([
+            'businessName' => 'Acme',
+        ]);
+
+        $this->factory->newUpdateCompanyJob($company);
+    }
 }
