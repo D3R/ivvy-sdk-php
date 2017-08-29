@@ -13,6 +13,8 @@ namespace Fcds\Ivvy\Model;
  */
 class Contact extends BaseModel
 {
+    use ValidateTrait;
+
     public $id;
     public $firstName;
     public $lastName;

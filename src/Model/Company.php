@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace Fcds\Ivvy\Model;
 
-class Company extends BaseModel
+use Fcds\Ivvy\Model\Validator\Validatable;
+
+class Company extends BaseModel implements Validatable
 {
+    use ValidateTrait;
+
     public $id;
     public $businessName;
     public $externalId;
