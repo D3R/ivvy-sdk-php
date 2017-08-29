@@ -6,7 +6,11 @@ namespace Fcds\IvvyTest;
 use Fcds\Ivvy\JobFactory;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Contact;
-use InvalidArgumentException;
+use Fcds\Ivvy\Model\Validator\Validator;
+use Fcds\Ivvy\Model\Validator\AddCompanyValidator;
+use Fcds\Ivvy\Model\Validator\UpdateCompanyValidator;
+use Fcds\Ivvy\Model\Validator\AddContactValidator;
+use Fcds\Ivvy\Model\Validator\UpdateContactValidator;
 
 /**
  * Class: JobFactoryTest
@@ -20,9 +24,26 @@ final class JobFactoryTest extends BaseTestCase
     /** @var JobFactory */
     protected $factory;
 
+    /** Validators */
+    protected $addCompanyValidatorMock;
+    protected $updateCompanyValidatorMock;
+    protected $addContactValidatorMock;
+    protected $updateContactValidatorMock;
+
+
     public function setUp()
     {
-        $this->factory = new JobFactory;
+        $this->addCompanyValidatorMock    = $this->createMock(AddCompanyValidator::class);
+        $this->updateCompanyValidatorMock = $this->createMock(UpdateCompanyValidator::class);
+        $this->addContactValidatorMock    = $this->createMock(AddContactValidator::class);
+        $this->updateContactValidatorMock = $this->createMock(UpdateContactValidator::class);
+
+        $this->factory = new JobFactory(
+            $this->addCompanyValidatorMock,
+            $this->updateCompanyValidatorMock,
+            $this->addContactValidatorMock,
+            $this->updateContactValidatorMock
+        );
     }
 
     public function testCanCreatePingJob()
@@ -53,32 +74,14 @@ final class JobFactoryTest extends BaseTestCase
             'phone' => '+18888888',
         ]);
 
+        $this->addCompanyValidatorMock
+            ->expects($this->once())
+            ->method('processBusinessRules')
+            ->willReturn([]);
+
         $result = $this->factory->newAddCompanyJob($company);
 
         $this->assertArraySubset($expectedArray, $result->toArray());
-    }
-
-    public function testWillNotCreateAddCompanyJobWithNoBusinessName()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $company = new Company([
-            'phone' => '+18888888',
-        ]);
-
-        $this->factory->newAddCompanyJob($company);
-    }
-
-    public function testWillNotCreateAddCompanyJobWithAnId()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $company = new Company([
-            'id' => 100,
-            'businessName' => 'Acme',
-        ]);
-
-        $this->factory->newAddCompanyJob($company);
     }
 
     public function testCanCreateUpdateCompanyJob()
@@ -96,20 +99,14 @@ final class JobFactoryTest extends BaseTestCase
             'businessName' => 'Acme',
         ]);
 
+        $this->updateCompanyValidatorMock
+            ->expects($this->once())
+            ->method('processBusinessRules')
+            ->willReturn([]);
+
         $result = $this->factory->newUpdateCompanyJob($company);
 
         $this->assertArraySubset($expectedArray, $result->toArray());
-    }
-
-    public function testWillNotCreateUpdateCompanyJobWithNoId()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $company = new Company([
-            'businessName' => 'Acme',
-        ]);
-
-        $this->factory->newUpdateCompanyJob($company);
     }
 
     public function testCanCreateAddContactJob()
@@ -128,28 +125,13 @@ final class JobFactoryTest extends BaseTestCase
             'lastName' => 'Doe',
         ]);
 
+        $this->addContactValidatorMock
+            ->expects($this->once())
+            ->method('processBusinessRules')
+            ->willReturn([]);
+
         $result = $this->factory->newAddContactJob($contact);
 
         $this->assertArraySubset($expectedArray, $result->toArray());
-    }
-
-    public function testWillNotCreateAddContactJobWithNoFirstNameOrLastName()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $this->factory->newAddContactJob(new Contact);
-    }
-
-    public function testWillNotCreateAddContactJobWithAnId()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $contact = new Contact([
-            'id' => 100,
-            'firstName' => 'John',
-            'lastName' => 'Doe',
-        ]);
-
-        $this->factory->newAddContactJob($contact);
     }
 }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Fcds\Ivvy;
 
-use InvalidArgumentException;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Contact;
+use Fcds\Ivvy\Model\Validator\Validator;
 
 /**
  * Class: JobFactory
@@ -14,6 +14,24 @@ use Fcds\Ivvy\Model\Contact;
  */
 final class JobFactory
 {
+    /** Validators */
+    protected $addCompanyValidator;
+    protected $updateCompanyValidator;
+    protected $addContactValidator;
+    protected $updateContactValidator;
+
+    public function __construct(
+        Validator $addCompanyValidator,
+        Validator $updateCompanyValidator,
+        Validator $addContactValidator,
+        Validator $updateContactValidator
+    ) {
+        $this->addCompanyValidator    = $addCompanyValidator;
+        $this->updateCompanyValidator = $updateCompanyValidator;
+        $this->addContactValidator    = $addContactValidator;
+        $this->updateContactValidator = $updateContactValidator;
+    }
+
     /**
      * Creates a job for the ping endpoint
      *
@@ -26,22 +44,14 @@ final class JobFactory
 
     public function newAddCompanyJob(Company $company)
     {
-        if (! $company->businessName) {
-            throw new InvalidArgumentException('A businessName is needed to add a Company');
-        }
-
-        if ($company->id) {
-            throw new InvalidArgumentException('Cannot add a Company that already has an id');
-        }
+        $this->addCompanyValidator->processBusinessRules($company);
 
         return $this->newAddOrUpdateCompanyJob($company);
     }
 
     public function newUpdateCompanyJob(Company $company)
     {
-        if (! $company->id) {
-            throw new InvalidArgumentException('An id is needed to update a Company');
-        }
+        $this->updateCompanyValidator->processBusinessRules($company);
 
         return $this->newAddOrUpdateCompanyJob($company);
     }
@@ -53,13 +63,7 @@ final class JobFactory
 
     public function newAddContactJob(Contact $contact)
     {
-        if (! $contact->firstName || ! $contact->lastName) {
-            throw new InvalidArgumentException('A firstName and a lastName is needed to add a Contact');
-        }
-
-        if ($contact->id) {
-            throw new InvalidArgumentException('Cannot add a Contact that already has an id');
-        }
+        $this->addContactValidator->processBusinessRules($contact);
 
         return $this->newAddOrUpdateContactJob($contact);
     }
