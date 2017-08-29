@@ -5,6 +5,7 @@ namespace Fcds\Ivvy;
 
 use InvalidArgumentException;
 use Fcds\Ivvy\Model\Company;
+use Fcds\Ivvy\Model\Contact;
 
 /**
  * Class: JobFactory
@@ -48,5 +49,23 @@ final class JobFactory
     protected function newAddOrUpdateCompanyJob(Company $company)
     {
         return new Job('contact', 'addOrUpdateCompany', $company->toArray());
+    }
+
+    public function newAddContactJob(Contact $contact)
+    {
+        if (! $contact->firstName || ! $contact->lastName) {
+            throw new InvalidArgumentException('A firstName and a lastName is needed to add a Contact');
+        }
+
+        if ($contact->id) {
+            throw new InvalidArgumentException('Cannot add a Contact that already has an id');
+        }
+
+        return $this->newAddOrUpdateContactJob($contact);
+    }
+
+    public function newAddOrUpdateContactJob(Contact $contact)
+    {
+        return new Job('contact', 'addOrUpdateContact', $contact->toArray());
     }
 }

@@ -5,6 +5,7 @@ namespace Fcds\IvvyTest;
 
 use Fcds\Ivvy\JobFactory;
 use Fcds\Ivvy\Model\Company;
+use Fcds\Ivvy\Model\Contact;
 use InvalidArgumentException;
 
 /**
@@ -109,5 +110,46 @@ final class JobFactoryTest extends BaseTestCase
         ]);
 
         $this->factory->newUpdateCompanyJob($company);
+    }
+
+    public function testCanCreateAddContactJob()
+    {
+        $expectedArray = [
+            'namespace' => 'contact',
+            'action' => 'addOrUpdateContact',
+            'params' => [
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+            ],
+        ];
+
+        $contact = new Contact([
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+        ]);
+
+        $result = $this->factory->newAddContactJob($contact);
+
+        $this->assertArraySubset($expectedArray, $result->toArray());
+    }
+
+    public function testWillNotCreateAddContactJobWithNoFirstNameOrLastName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->factory->newAddContactJob(new Contact);
+    }
+
+    public function testWillNotCreateAddContactJobWithAnId()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $contact = new Contact([
+            'id' => 100,
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+        ]);
+
+        $this->factory->newAddContactJob($contact);
     }
 }
