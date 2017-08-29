@@ -27,7 +27,7 @@ class Address extends BaseModel
      */
     public function __contruct(array $props)
     {
-        foreach ($props as $key=>$value) {
+        foreach ($props as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }

@@ -37,7 +37,7 @@ class Company extends BaseModel
      */
     public function __construct(array $props)
     {
-        foreach ($props as $key=>$value) {
+        foreach ($props as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
