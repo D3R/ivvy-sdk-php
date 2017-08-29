@@ -8,7 +8,7 @@ namespace Fcds\Ivvy;
  *
  * An immutable class that represents a job to be run in a batch operation.
  */
-class Job
+final class Job
 {
     protected $namespace;
 

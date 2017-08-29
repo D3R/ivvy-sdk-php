@@ -75,8 +75,8 @@ final class IvvyTest extends BaseTestCase
             ->method('request')
             ->willReturn($this->generateStubResponse(200, json_encode(['asyncId' => 'foo'])));
 
-        $job1 = $this->createMock(Job::class);
-        $job2 = $this->createMock(Job::class);
+        $job1 = new Job('foo', 'bar');
+        $job2 = new Job('baz', 'qux');
 
         $result = $this->ivvy->run([$job1, $job2]);
 
@@ -89,8 +89,8 @@ final class IvvyTest extends BaseTestCase
             ->method('request')
             ->willReturn($this->generateStubResponse(400));
 
-        $job1 = $this->createMock(Job::class);
-        $job2 = $this->createMock(Job::class);
+        $job1 = new Job('foo', 'bar');
+        $job2 = new Job('baz', 'qux');
 
         $result = $this->ivvy->run([$job1, $job2]);
 
