@@ -72,7 +72,7 @@ final class Ivvy
         $body = json_encode([
             'jobs' => array_map(
                 function ($job) {
-                    return $job->toArray();
+                    return $job->toArray(true);
                 },
                 $jobs
             ),

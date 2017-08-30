@@ -16,7 +16,7 @@ abstract class BaseModel
         $arr = [];
 
         foreach ($this as $prop => $value) {
-            if (! empty($value)) {
+            if (! $removeEmptyValues || ! empty($value)) {
                 $arr[ $prop ] = $value instanceof self ? $value->toArray($removeEmptyValues) : $value;
             }
         }

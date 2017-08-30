@@ -58,7 +58,7 @@ final class JobFactory
 
     protected function newAddOrUpdateCompanyJob(Company $company)
     {
-        return new Job('contact', 'addOrUpdateCompany', $company->toArray());
+        return new Job('contact', 'addOrUpdateCompany', $company->toArray(true));
     }
 
     public function newAddContactJob(Contact $contact)
@@ -70,6 +70,6 @@ final class JobFactory
 
     protected function newAddOrUpdateContactJob(Contact $contact)
     {
-        return new Job('contact', 'addOrUpdateContact', $contact->toArray());
+        return new Job('contact', 'addOrUpdateContact', $contact->toArray(true));
     }
 }
