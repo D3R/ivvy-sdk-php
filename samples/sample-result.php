@@ -11,7 +11,8 @@ $result = $ivvy->result($asyncId);
 
 if ($result['results']) {
     foreach ($result['results'] as $jobResult) {
-        $jobDescription = implode(', ', $jobResult['request']);
+        $jobResultRequest = array_map(function($value) { return is_array($value) ? implode(', ', $value) : $value; },  $jobResult['request']);
+        $jobDescription = implode(', ', $jobResultRequest);
         $responseDescription = implode(', ', $jobResult['response']);
 
         echo "{$jobResult['namespace']}/{$jobResult['action']}: {$jobDescription}\n";

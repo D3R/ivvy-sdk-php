@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Fcds\IvvyTest\Model\Validator;
 
 use Fcds\Ivvy\Model\BusinessRuleException;
+use Fcds\Ivvy\Model\Address;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Validator\UpdateCompanyValidator;
 use Fcds\Ivvy\Model\Validator\Validator;
@@ -31,11 +32,27 @@ final class UpdateCompanyValidatorTest extends BaseTestCase
     {
         $company = new Company([
             'id' => 100,
+            'address' => new Address([
+                'countryCode' => 'AU',
+                'stateCode'   => 'QLD',
+                'postalCode'  => '4227',
+            ]),
         ]);
 
         $result = $company->validate($this->validator);
 
         $this->assertTrue(true); // Everythign is fine
+    }
+
+    public function testValidateCompanyWithNoAddressOrCountryCodeOrStateCodeOrPostalCode()
+    {
+         $this->expectException(BusinessRuleException::class);
+
+         $company = new Company([
+             'id' => 100,
+         ]);
+
+        $company->validate($this->validator);
     }
 
     public function testValidateCompanyWithNoId()
