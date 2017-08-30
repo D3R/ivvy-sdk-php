@@ -56,7 +56,7 @@ final class JobFactoryTest extends BaseTestCase
 
         $pingJob = $this->factory->newPingJob();
 
-        $this->assertArraySubset($expectedArray, $pingJob->toArray());
+        $this->assertEquals($expectedArray, $pingJob->toArray());
     }
 
     public function testCanCreateAddCompanyJob()
@@ -66,6 +66,7 @@ final class JobFactoryTest extends BaseTestCase
             'action' => 'addOrUpdateCompany',
             'params' => [
                 'businessName' => 'Acme',
+                'phone' => '+18888888',
             ],
         ];
 
@@ -81,7 +82,7 @@ final class JobFactoryTest extends BaseTestCase
 
         $result = $this->factory->newAddCompanyJob($company);
 
-        $this->assertArraySubset($expectedArray, $result->toArray());
+        $this->assertEquals($expectedArray, $result->toArray());
     }
 
     public function testCanCreateUpdateCompanyJob()
@@ -91,6 +92,7 @@ final class JobFactoryTest extends BaseTestCase
             'action' => 'addOrUpdateCompany',
             'params' => [
                 'id' => 100,
+                'businessName' => 'Acme',
             ],
         ];
 
@@ -106,7 +108,7 @@ final class JobFactoryTest extends BaseTestCase
 
         $result = $this->factory->newUpdateCompanyJob($company);
 
-        $this->assertArraySubset($expectedArray, $result->toArray());
+        $this->assertEquals($expectedArray, $result->toArray());
     }
 
     public function testCanCreateAddContactJob()
@@ -132,7 +134,7 @@ final class JobFactoryTest extends BaseTestCase
 
         $result = $this->factory->newAddContactJob($contact);
 
-        $this->assertArraySubset($expectedArray, $result->toArray());
+        $this->assertEquals($expectedArray, $result->toArray());
     }
 
     public function testCanCreateUpdateContactJob()
