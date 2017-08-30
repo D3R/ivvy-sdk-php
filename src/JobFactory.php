@@ -68,7 +68,7 @@ final class JobFactory
         return $this->newAddOrUpdateContactJob($contact);
     }
 
-    public function newAddOrUpdateContactJob(Contact $contact)
+    protected function newAddOrUpdateContactJob(Contact $contact)
     {
         return new Job('contact', 'addOrUpdateContact', $contact->toArray());
     }
