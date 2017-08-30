@@ -44,14 +44,14 @@ final class JobFactory
 
     public function newAddCompanyJob(Company $company)
     {
-        $this->addCompanyValidator->processBusinessRules($company);
+        $company->validate($this->addCompanyValidator);
 
         return $this->newAddOrUpdateCompanyJob($company);
     }
 
     public function newUpdateCompanyJob(Company $company)
     {
-        $this->updateCompanyValidator->processBusinessRules($company);
+        $company->validate($this->updateCompanyValidator);
 
         return $this->newAddOrUpdateCompanyJob($company);
     }
@@ -63,7 +63,7 @@ final class JobFactory
 
     public function newAddContactJob(Contact $contact)
     {
-        $this->addContactValidator->processBusinessRules($contact);
+        $contact->validate($this->addContactValidator);
 
         return $this->newAddOrUpdateContactJob($contact);
     }
