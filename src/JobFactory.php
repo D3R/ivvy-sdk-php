@@ -68,6 +68,13 @@ final class JobFactory
         return $this->newAddOrUpdateContactJob($contact);
     }
 
+    public function newUpdateContactJob(Contact $contact)
+    {
+        $contact->validate($this->updateContactValidator);
+
+        return $this->newAddOrUpdateContactJob($contact);
+    }
+
     protected function newAddOrUpdateContactJob(Contact $contact)
     {
         return new Job('contact', 'addOrUpdateContact', $contact->toArray(true));

@@ -134,4 +134,30 @@ final class JobFactoryTest extends BaseTestCase
 
         $this->assertArraySubset($expectedArray, $result->toArray());
     }
+
+    public function testCanCreateUpdateContactJob()
+    {
+        $expectedArray = [
+            'namespace' => 'contact', // see page 28 and 29 from the API PDF.
+            'action' => 'addOrUpdateContact',
+            'params' => [
+                'id'    => 100,
+                'email' => 'johndoe@mail.com',
+            ],
+        ];
+
+        $contact = new Contact([
+            'id' => 100,
+            'email' => 'johndoe@mail.com',
+        ]);
+
+        $this->updateContactValidatorMock
+            ->expects($this->once())
+            ->method('processBusinessRules')
+            ->willReturn([]);
+
+        $job = $this->factory->newUpdateContactJob($contact);
+
+        $this->assertEquals($expectedArray, $job->toArray());
+    }
 }
