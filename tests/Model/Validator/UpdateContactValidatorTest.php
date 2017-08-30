@@ -67,7 +67,6 @@ final class UpdateContactValidatorTest extends BaseTestCase
         ]);
 
         $result = $contact->validate($this->validator);
-
     }
 
     public function testValidateInvalidEmailAddress()
