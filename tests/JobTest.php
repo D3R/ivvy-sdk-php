@@ -12,7 +12,7 @@ use Fcds\IvvyTest\BaseTestCase;
  * @see BaseTestCase
  * @covers Fcds\Ivvy\Job
  */
-class JobTest extends BaseTestCase
+final class JobTest extends BaseTestCase
 {
     /** @var Job */
     protected $job;

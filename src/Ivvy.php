@@ -51,7 +51,7 @@ final class Ivvy
     {
         $requestUri = $this->createRequestUri('test', 'ping');
 
-        $body = json_encode(['example' => 'body']);                // TODO: change to a blank body if supported
+        $body = json_encode([]);
 
         $headers = $this->createHeaders($body, $requestUri);
 
@@ -66,7 +66,7 @@ final class Ivvy
      * @param array $jobs
      * @return string - the async Id
      */
-    public function run(array $jobs)
+    public function run(array $jobs): ?string
     {
         $requestUri = $this->createRequestUri('batch', 'run');
         $body = json_encode([
@@ -83,9 +83,39 @@ final class Ivvy
 
         $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
 
-        $json = json_decode((string) $response->getBody());
+        if ($response->getStatusCode() === 200) {
+            $json = json_decode((string) $response->getBody());
 
-        return $json->asyncId;
+            return $json->asyncId;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the result of a batch job
+     *
+     * @param string $async - The asyncId for the batch job to show the results of
+     *
+     * @return array
+     */
+    public function result(string $async): array
+    {
+        $requestUri = $this->createRequestUri('batch', 'results');
+        $body = json_encode(compact('async'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_merge(['success' => true], $result);
+        } elseif ($response->getStatusCode() === 400 && $result['specificCode'] === 24114) {
+            return ['success' => false, 'error' => 'not_completed'];
+        } else {
+            return ['success' => false, 'error' => 'unknown'];
+        }
     }
 
     /**
@@ -111,7 +141,7 @@ final class Ivvy
      *
      * @return array
      */
-    protected function createHeaders(string $body, string $requestUri)
+    protected function createHeaders(string $body, string $requestUri): array
     {
         $contentType = 'application/json';
         $contentMd5 = md5($body);

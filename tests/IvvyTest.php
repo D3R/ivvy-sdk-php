@@ -47,14 +47,7 @@ final class IvvyTest extends BaseTestCase
         );
     }
 
-    public function testCannotBeInstantiated()
-    {
-        $this->expectException(Error::class);
-
-        new Ivvy();
-    }
-
-    public function testPingSuccess()
+    public function testPingSuccess(): void
     {
         $this->clientMock
             ->method('request')
@@ -65,7 +58,7 @@ final class IvvyTest extends BaseTestCase
         $this->assertTrue($result);
     }
 
-    public function testPingFailure()
+    public function testPingFailure(): void
     {
          $this->clientMock
             ->method('request')
@@ -76,18 +69,95 @@ final class IvvyTest extends BaseTestCase
         $this->assertFalse($result);
     }
 
-    public function testBatchRunSuccess()
+    public function testBatchRunSuccess(): void
     {
         $this->clientMock
             ->method('request')
             ->willReturn($this->generateStubResponse(200, json_encode(['asyncId' => 'foo'])));
 
-        $job1 = $this->createMock(Job::class);
-        $job2 = $this->createMock(Job::class);
+        $job1 = new Job('foo', 'bar');
+        $job2 = new Job('baz', 'qux');
 
         $result = $this->ivvy->run([$job1, $job2]);
 
         $this->assertEquals('foo', $result);
+    }
+
+    public function testBatchRunFailure(): void
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $job1 = new Job('foo', 'bar');
+        $job2 = new Job('baz', 'qux');
+
+        $result = $this->ivvy->run([$job1, $job2]);
+
+        $this->assertNull($result);
+    }
+
+    public function testBatchResultSuccess(): void
+    {
+        $response = [
+            'results' => [
+                [
+                    'namespace' => 'foo',
+                    'action'    => 'bar',
+                    'request' => [
+                    ],
+                    'response' => [
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedResult = array_merge(['success' => true], $response);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
+    }
+
+    public function testBatchResultFailureNotCompleted(): void
+    {
+        $response = [
+            'errorCode'    => 400,
+            'specificCode' => 24114,
+        ];
+
+        $expectedResult = [
+            'success' => false,
+            'error'   => 'not_completed',
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400, json_encode($response)));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
+    }
+
+    public function testBatchResultFailure(): void
+    {
+        $expectedResult = [
+            'success' => false,
+            'error'   => 'unknown',
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
     }
 
     /**

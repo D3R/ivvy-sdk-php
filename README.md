@@ -8,6 +8,11 @@ A PSR-4 compilant SDK to work with iVvy's API 1.0
 $ composer run-script test
 ```
 
+##### Run Coverage
+```
+$ composer run-script test-coverage
+```
+
 ##### Lint
 
 ```php
