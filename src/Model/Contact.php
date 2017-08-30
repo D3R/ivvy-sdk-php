@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Fcds\Ivvy\Model;
 
+use Fcds\Ivvy\Model\Validator\Validatable;
+
 /**
  * Class: Contact
  *
@@ -11,7 +13,7 @@ namespace Fcds\Ivvy\Model;
  * Represents a contact in iVvy.
  * NOTE: Doesn't support Groups yet.
  */
-class Contact extends BaseModel
+class Contact extends BaseModel implements Validatable
 {
     use ValidateTrait;
 
