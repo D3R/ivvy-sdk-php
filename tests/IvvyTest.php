@@ -158,7 +158,6 @@ final class IvvyTest extends BaseTestCase
         $result = $this->ivvy->result('foobar');
 
         $this->assertArraySubset($expectedResult, $result);
-
     }
 
     /**

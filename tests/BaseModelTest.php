@@ -9,7 +9,39 @@ class BaseModelTest extends BaseTestCase
 {
     public function testCanReturnArrayRepresentation()
     {
-        $modelA = new class('foo') extends BaseModel
+        $expectedArray = [
+            'bar' => 'bar',
+            'dependent' => [
+                'foo' => 'foo',
+            ],
+        ];
+
+        $independentModel = $this->generateStubIndependentModel();
+
+        $result = $independentModel->toArray();
+
+        $this->assertArraySubset($expectedArray, $result);
+    }
+
+    public function testCanReturnArrayRepresentationByRemovingEmptyValues()
+    {
+        $expectedArray = [
+            'bar' => 'bar',
+            'dependent' => [
+                'foo' => 'foo',
+            ],
+        ];
+
+        $independentModel = $this->generateStubIndependentModel();
+
+        $result = $independentModel->toArray(true);
+
+        $this->assertEquals($expectedArray, $result);
+    }
+
+    protected function generateStubIndependentModel(): BaseModel
+    {
+        $dependent = new class('foo') extends BaseModel
         {
             public $foo;
 
@@ -19,27 +51,20 @@ class BaseModelTest extends BaseTestCase
             }
         };
 
-        $modelB = new class('bar', $modelA) extends BaseModel
+        $independent = new class('bar', $dependent) extends BaseModel
         {
             public $bar;
-            public $modelA;
+            public $qux;
+            public $corge;
+            public $dependent;
 
-            public function __construct($bar, $modelA)
+            public function __construct($bar, $dependent)
             {
                 $this->bar = $bar;
-                $this->modelA = $modelA;
+                $this->dependent = $dependent;
             }
         };
 
-        $expectedArray = [
-            'bar' => 'bar',
-            'modelA' => [
-                'foo' => 'foo',
-            ],
-        ];
-
-        $result = $modelB->toArray();
-
-        $this->assertArraySubset($expectedArray, $result);
+        return $independent;
     }
 }

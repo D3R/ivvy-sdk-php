@@ -11,12 +11,14 @@ abstract class BaseModel
      *
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $removeEmptyValues = false): array
     {
         $arr = [];
 
         foreach ($this as $prop => $value) {
-            $arr[ $prop ] = $value instanceof self ? $value->toArray() : $value;
+            if (! empty($value)) {
+                $arr[ $prop ] = $value instanceof self ? $value->toArray($removeEmptyValues) : $value;
+            }
         }
 
         return $arr;
