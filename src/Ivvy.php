@@ -101,7 +101,7 @@ final class Ivvy
      */
     public function result(string $async): array
     {
-        $requestUri = $this->createRequestUri('batch', 'run');
+        $requestUri = $this->createRequestUri('batch', 'results');
         $body = json_encode(compact('async'));
         $headers = $this->createHeaders($body, $requestUri);
 

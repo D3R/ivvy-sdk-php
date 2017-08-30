@@ -3,18 +3,16 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 $apiKey = $argv[1];
 $apiSecret = $argv[2];
+$asyncId = $argv[3];
 
 $ivvy = (new Fcds\Ivvy\IvvyFactory)->newInstance($apiKey, $apiSecret);
 
-$jobFactory = new Fcds\Ivvy\JobFactory;
+$result = $ivvy->result($asyncId);
 
-$asyncId = $ivvy->run([
-    $jobFactory->newPingJob(),
-    $jobFactory->newPingJob(),
-]);
+echo print_r($result, true);
 
-if ($asyncId) {
-    echo "Async ID: {$asyncId}\n";
+if ($result['results']) {
+    echo "Wait for it\n";
 } else {
     echo "Couldn't connect to the API server. Check iVvy's credentials\n";
     exit(1);

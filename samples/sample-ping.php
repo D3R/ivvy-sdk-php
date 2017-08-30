@@ -10,4 +10,5 @@ if ($ivvy->ping()) {
     echo "Connection successful\n";
 } else {
     echo "Couldn't connect to the API server. Check iVvy's credentials\n";
+    exit(1);
 }
