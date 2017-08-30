@@ -93,6 +93,32 @@ final class Ivvy
     }
 
     /**
+     * Gets the result of a batch job
+     *
+     * @param string $async - The asyncId for the batch job to show the results of
+     *
+     * @return array
+     */
+    public function result(string $async): array
+    {
+        $requestUri = $this->createRequestUri('batch', 'run');
+        $body = json_encode(compact('async'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_merge(['success' => true], $result);
+        } elseif ($response->getStatusCode() === 400 && $result['specificCode'] === 24114) {
+            return ['success' => false, 'error' => 'not_completed'];
+        } else {
+            return ['success' => false, 'error' => 'unknown'];
+        }
+    }
+
+    /**
      * Creates a request URI string from the passed namespace and action
      *
      * @param string $namespace

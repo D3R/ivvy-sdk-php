@@ -97,6 +97,70 @@ final class IvvyTest extends BaseTestCase
         $this->assertNull($result);
     }
 
+    public function testBatchResultSuccess(): void
+    {
+        $response = [
+            'results' => [
+                [
+                    'namespace' => 'foo',
+                    'action'    => 'bar',
+                    'request' => [
+                    ],
+                    'response' => [
+                    ],
+                ],
+            ],
+        ];
+
+        $expectedResult = array_merge(['success' => true], $response);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
+    }
+
+    public function testBatchResultFailureNotCompleted(): void
+    {
+        $response = [
+            'errorCode'    => 400,
+            'specificCode' => 24114,
+        ];
+
+        $expectedResult = [
+            'success' => false,
+            'error'   => 'not_completed',
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400, json_encode($response)));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
+    }
+
+    public function testBatchResultFailure(): void
+    {
+        $expectedResult = [
+            'success' => false,
+            'error'   => 'unknown',
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $result = $this->ivvy->result('foobar');
+
+        $this->assertArraySubset($expectedResult, $result);
+
+    }
+
     /**
      * Utility method to generate a stub response for the Guzzle client
      * with the passed status code and body.
