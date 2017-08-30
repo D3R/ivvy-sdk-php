@@ -27,6 +27,27 @@ final class AddContactValidatorTest extends BaseTestCase
         $this->validator = new AddContactValidator();
     }
 
+    public function testSuccessfulValidation()
+    {
+        $john = new Contact([
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'phone' => '6123-4567',
+        ]);
+
+        $mary = new Contact([
+            'firstName' => 'Mary',
+            'lastName' => 'Sue',
+            'email' => 'marysue@mail.com',
+            'phone' => '234-5678',
+        ]);
+
+        $john->validate($this->validator);
+        $mary->validate($this->validator);
+
+        $this->assertTrue(true); // Everything is fine
+    }
+
     public function testValidateContactWithNoFirstName()
     {
         $this->expectException(BusinessRuleException::class);
@@ -35,7 +56,7 @@ final class AddContactValidatorTest extends BaseTestCase
             'lastName' => 'Doe',
         ]);
 
-        $result = $contact->validate($this->validator);
+        $contact->validate($this->validator);
     }
 
     public function testValidateContactWithNoLastName()
@@ -46,7 +67,7 @@ final class AddContactValidatorTest extends BaseTestCase
             'firstName' => 'John',
         ]);
 
-        $result = $contact->validate($this->validator);
+        $contact->validate($this->validator);
     }
 
     public function testValidateContactHasNoIdSet()
@@ -59,6 +80,32 @@ final class AddContactValidatorTest extends BaseTestCase
             'lastName' => 'Doe',
         ]);
 
-        $result = $contact->validate($this->validator);
+        $contact->validate($this->validator);
+    }
+
+    public function testValidateInvalidEmailAddress()
+    {
+        $this->expectException(BusinessRuleException::class);
+
+        $contact = new Contact([
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'foo',
+        ]);
+
+        $contact->validate($this->validator);
+    }
+
+    public function testValidateInvalidPhone()
+    {
+        $this->expectException(BusinessRuleException::class);
+
+        $contact = new Contact([
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'phone' => 'foo',
+        ]);
+
+        $contact->validate($this->validator);
     }
 }

@@ -27,7 +27,7 @@ final class UpdateCompanyValidatorTest extends BaseTestCase
         $this->validator = new UpdateCompanyValidator();
     }
 
-    public function testValidateCompanyHasId()
+    public function testSuccessfulValidation()
     {
         $company = new Company([
             'id' => 100,
@@ -35,7 +35,7 @@ final class UpdateCompanyValidatorTest extends BaseTestCase
 
         $result = $company->validate($this->validator);
 
-        $this->assertTrue(true); // nothing bad happened
+        $this->assertTrue(true); // Everythign is fine
     }
 
     public function testValidateCompanyWithNoId()

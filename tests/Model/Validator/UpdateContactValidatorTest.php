@@ -27,15 +27,25 @@ final class UpdateContactValidatorTest extends BaseTestCase
         $this->validator = new UpdateContactValidator();
     }
 
-    public function testValidateContactHasId()
+    public function testSuccessfulValidation()
     {
-        $contact = new Contact([
+        $john = new Contact([
             'id' => 100,
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'phone' => '6123-4567',
         ]);
 
-        $result = $contact->validate($this->validator);
+        $mary = new Contact([
+            'id' => 200,
+            'email' => 'marysue@mail.com',
+            'phone' => '234-5678',
+        ]);
 
-        $this->assertTrue(true); // nothing bad happened
+        $john->validate($this->validator);
+        $mary->validate($this->validator);
+
+        $this->assertTrue(true); // Everything is fine
     }
 
     public function testValidateContactWithNoId()
@@ -45,5 +55,33 @@ final class UpdateContactValidatorTest extends BaseTestCase
         $contact = new Contact;
 
         $result = $contact->validate($this->validator);
+    }
+
+    public function testValidateInvalidEmailAddress()
+    {
+        $this->expectException(BusinessRuleException::class);
+
+        $contact = new Contact([
+            'id' => 100,
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'foo',
+        ]);
+
+        $contact->validate($this->validator);
+    }
+
+    public function testValidateInvalidPhone()
+    {
+        $this->expectException(BusinessRuleException::class);
+
+        $contact = new Contact([
+            'id' => 100,
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'phone' => 'foo',
+        ]);
+
+        $contact->validate($this->validator);
     }
 }

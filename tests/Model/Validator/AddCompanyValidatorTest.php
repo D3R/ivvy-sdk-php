@@ -27,7 +27,7 @@ final class AddCompanyValidatorTest extends BaseTestCase
         $this->validator = new AddCompanyValidator();
     }
 
-    public function testValidateCompanyHasBusinessName()
+    public function testSuccessfulValidation()
     {
         $company = new Company([
             'businessName' => 'Acme',
@@ -35,7 +35,7 @@ final class AddCompanyValidatorTest extends BaseTestCase
 
         $result = $company->validate($this->validator);
 
-        $this->assertTrue(true); // nothing bad happened
+        $this->assertTrue(true); // Everything is fine
     }
 
     public function testValidateCompanyWithNoBusinessName()
