@@ -24,6 +24,10 @@ class UpdateContactValidator implements Validator
             yield 'An id is needed to update a Contact';
         }
 
+        if (! $contact->email) {
+            yield 'An email is needed to update a Contact';
+        }
+
         if ($contact->email && ! RespectValidator::email()->validate($contact->email)) {
             yield 'Contact has an invalid email';
         }

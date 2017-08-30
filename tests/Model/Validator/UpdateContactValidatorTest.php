@@ -33,6 +33,7 @@ final class UpdateContactValidatorTest extends BaseTestCase
             'id' => 100,
             'firstName' => 'John',
             'lastName' => 'Doe',
+            'email' => 'johndoe@mail.com',
             'phone' => '6123-4567',
         ]);
 
@@ -55,6 +56,18 @@ final class UpdateContactValidatorTest extends BaseTestCase
         $contact = new Contact;
 
         $result = $contact->validate($this->validator);
+    }
+
+    public function testValidateContactWithNoEmail()
+    {
+        $this->expectException(BusinessRuleException::class);
+
+        $contact = new Contact([
+            'id' => 100,
+        ]);
+
+        $result = $contact->validate($this->validator);
+
     }
 
     public function testValidateInvalidEmailAddress()
