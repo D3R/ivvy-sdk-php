@@ -9,10 +9,15 @@ $ivvy = (new Fcds\Ivvy\IvvyFactory)->newInstance($apiKey, $apiSecret);
 
 $result = $ivvy->result($asyncId);
 
-echo print_r($result, true);
-
 if ($result['results']) {
-    echo "Wait for it\n";
+    foreach ($result['results'] as $jobResult) {
+        $jobDescription = implode(', ', $jobResult['request']);
+        $responseDescription = implode(', ', $jobResult['response']);
+
+        echo "{$jobResult['namespace']}/{$jobResult['action']}: {$jobDescription}\n";
+        echo "Response: {$responseDescription}\n";
+        echo "\n";
+    }
 } else {
     echo "Couldn't connect to the API server. Check iVvy's credentials\n";
     exit(1);
