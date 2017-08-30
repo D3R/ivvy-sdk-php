@@ -8,5 +8,4 @@ before_script:
   - composer dump-autoload -o
 
 script:
-  - composer run-script test-coverage
-  - composer run-script lint
+  - composer run-script test-all
