@@ -26,9 +26,5 @@
         "psr-4": {
             "Fcds\\IvvyTest\\": "tests/"
         }
-    },
-    "scripts": {
-        "lint": "phpcs -p --standard=PSR2 src tests",
-        "lint-fix": "phpcbf -p --standard=PSR2 src tests"
     }
 }

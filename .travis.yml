@@ -9,4 +9,4 @@ before_script:
 
 script:
   - vendor/bin/phpunit --testdox --coverage-text
-  - vendor/bin/phpcs -p --standard=PSR2 src tests
+  - vendor/bin/phpcs

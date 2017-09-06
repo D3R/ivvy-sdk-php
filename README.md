@@ -16,5 +16,5 @@ $ vendor/bin/phpunit --testdox --coverage-text
 ##### Lint
 
 ```php
-$ composer run-script lint
+$ vendor/bin/phpcs
 ```
