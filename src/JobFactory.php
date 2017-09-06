@@ -9,10 +9,8 @@ use Fcds\Ivvy\Model\Validator\Validator;
 
 /**
  * Class: JobFactory
- *
- * @final
  */
-final class JobFactory
+class JobFactory
 {
     /** Validators */
     protected $addCompanyValidator;

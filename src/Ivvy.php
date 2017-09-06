@@ -7,10 +7,8 @@ use GuzzleHttp\Client;
 
 /**
  * Class: Ivvy
- *
- * @final
  */
-final class Ivvy
+class Ivvy
 {
     const HOST = 'api.us-west-2.ivvy.com';
     const API_VERSION = '1.0';
