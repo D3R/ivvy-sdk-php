@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Fcds\Ivvy;
 
 use GuzzleHttp\Client;
+use Fcds\Ivvy\Model\Company;
 
 /**
  * Class: Ivvy
@@ -17,7 +18,7 @@ class Ivvy
     /** @var Signature */
     private $signature;
 
-    /** @var Clint */
+    /** @var Client */
     private $client;
 
     /**
@@ -113,6 +114,30 @@ class Ivvy
             return ['success' => false, 'error' => 'not_completed'];
         } else {
             return ['success' => false, 'error' => 'unknown'];
+        }
+    }
+
+    /**
+     * Gets all the companies. It doesn't support pagination yet.
+     *
+     * @return array<Company>
+     */
+    public function getCompanyList(): ?array
+    {
+        $requestUri = $this->createRequestUri('contact', 'getCompanyList');
+        $body = json_encode([]);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($companyData) {
+                return new Company($companyData);
+            }, $result['results']);
+        } else {
+            return null;
         }
     }
 

@@ -41,13 +41,14 @@ class Company extends BaseModel implements Validatable
      */
     public function __construct(array $props = [])
     {
-        foreach ($props as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
-
-        // TODO: write it with this approach:
-        /* $this->id = $props['id'] ?? 0; */
+        $this->id = $props['id'] ?? 0;
+        $this->businessName = $props['businessName'] ?? null;
+        $this->externalId = $props['externalId'] ?? 0;
+        $this->tradingName = $props['tradingName'] ?? null;
+        $this->businessNumber = $props['businessNumber'] ?? null;
+        $this->phone = $props['phone'] ?? null;
+        $this->fax = $props['fax'] ?? null;
+        $this->email = $props['email'] ?? null;
+        $this->address = $props['address'] ?? null;
     }
 }

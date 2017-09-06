@@ -9,6 +9,7 @@ use Fcds\Ivvy\Job;
 use Fcds\Ivvy\Signature;
 use Fcds\IvvyTest\BaseTestCase;
 use GuzzleHttp\Client;
+use Fcds\Ivvy\Model\Company;
 
 /**
  * Class: IvvyTest
@@ -158,6 +159,43 @@ final class IvvyTest extends BaseTestCase
         $result = $this->ivvy->result('foobar');
 
         $this->assertArraySubset($expectedResult, $result);
+    }
+
+    public function testGetCompanyListSuccess(): void
+    {
+        $response = [
+            'results' => [
+                ['businessName' => 'foo'],
+                ['businessName' => 'bar'],
+            ],
+        ];
+
+        $expectedResult = [
+            new Company(['businessName' => 'foo']),
+            new Company(['businessName' => 'bar']),
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $companies = $this->ivvy->getCompanyList();
+
+        $this->assertCount(2, $companies);
+        $this->assertEquals($expectedResult[0]->businessName, $companies[0]->businessName);
+        $this->assertEquals($expectedResult[1]->businessName, $companies[1]->businessName);
+        $this->assertEquals($expectedResult, $companies);
+    }
+
+    public function testGetCompanyListFail(): void
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $companies = $this->ivvy->getCompanyList();
+
+        $this->assertNull($companies);
     }
 
     /**
