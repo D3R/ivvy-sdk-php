@@ -5,12 +5,12 @@ A PSR-4 compilant SDK to work with iVvy's API 1.0
 ##### Run tests
 
 ```php
-$ composer run-script test
+$ vendor/bin/phpunit
 ```
 
 ##### Run Coverage
 ```
-$ composer run-script test-coverage
+$ vendor/bin/phpunit --testdox --coverage-text
 ```
 
 ##### Lint
