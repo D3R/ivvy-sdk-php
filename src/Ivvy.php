@@ -63,7 +63,7 @@ class Ivvy
      * Run the passed jobs
      *
      * @param array $jobs
-     * @return string - the async Id
+     * @return string|null - the async Id
      */
     public function run(array $jobs): ?string
     {
@@ -120,7 +120,7 @@ class Ivvy
     /**
      * Gets all the companies. It doesn't support pagination yet.
      *
-     * @return array<Company>
+     * @return array<Company>|null
      */
     public function getCompanyList(): ?array
     {
