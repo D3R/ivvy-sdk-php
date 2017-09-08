@@ -6,7 +6,7 @@ A PSR-4 compilant SDK to work with iVvy's API 1.0
 
 Install through composer.
 
-```php
+```bash
 $ composer require fundacion-ciudad-del-saber/ivvy-sdk-php:^0.1
 ```
 
