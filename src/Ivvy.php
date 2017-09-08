@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
+use Fcds\Ivvy\Model\Address;
 
 /**
  * Class: Ivvy
@@ -135,7 +136,9 @@ class Ivvy
         $result = json_decode((string) $response->getBody(), true);
 
         if ($response->getStatusCode() === 200) {
-            return array_map(function ($companyData) {
+            return array_map(function ($singleResult) {
+                $companyData = array_merge($singleResult, ['address' => new Address($singleResult['address'])]);
+
                 return new Company($companyData);
             }, $result['results']);
         } else {

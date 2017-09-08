@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
+use Fcds\Ivvy\Model\Address;
 
 /**
  * Class: IvvyTest
@@ -167,14 +168,34 @@ final class IvvyTest extends BaseTestCase
     {
         $response = [
             'results' => [
-                ['businessName' => 'foo'],
-                ['businessName' => 'bar'],
+                [
+                    'businessName' => 'foo1',
+                    'address' => [
+                        'line1' => 'bar1',
+                    ],
+                ],
+                [
+                    'businessName' => 'foo2',
+                    'address' => [
+                        'line1' => 'bar2',
+                    ],
+                ],
             ],
         ];
 
         $expectedResult = [
-            new Company(['businessName' => 'foo']),
-            new Company(['businessName' => 'bar']),
+            new Company([
+                'businessName' => 'foo1',
+                'address' => new Address([
+                    'line1' => 'bar1',
+                ]),
+            ]),
+            new Company([
+                'businessName' => 'foo2',
+                'address' => new Address([
+                    'line1' => 'bar2',
+                ]),
+            ]),
         ];
 
         $this->clientMock
@@ -185,7 +206,9 @@ final class IvvyTest extends BaseTestCase
 
         $this->assertCount(2, $companies);
         $this->assertEquals($expectedResult[0]->businessName, $companies[0]->businessName);
+        $this->assertEquals($expectedResult[0]->address->line1, $companies[0]->address->line1);
         $this->assertEquals($expectedResult[1]->businessName, $companies[1]->businessName);
+        $this->assertEquals($expectedResult[1]->address->line1, $companies[1]->address->line1);
         $this->assertEquals($expectedResult, $companies);
     }
 
