@@ -13,6 +13,7 @@ use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
 use Fcds\Ivvy\Model\Address;
+use Fcds\Ivvy\Model\Contact;
 
 /**
  * Class: IvvyTest
@@ -326,6 +327,41 @@ final class IvvyTest extends BaseTestCase
         $options = $this->ivvy->getOptions();
 
         $this->assertNull($options);
+    }
+
+    public function testGetContactListSuccess()
+    {
+        $response = [
+            'results' => [
+                ['firstName' => 'john'],
+                ['firstName' => 'mary'],
+            ],
+        ];
+
+        $expectedResult = [
+            new Contact(['firstName' => 'john']),
+            new Contact(['firstName' => 'mary']),
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $contacts = $this->ivvy->getContactList();
+
+        $this->assertEquals($expectedResult, $contacts);
+
+    }
+
+    public function testGetContactListFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $contacts = $this->ivvy->getContactList();
+
+        $this->assertNull($contacts);
 
     }
 

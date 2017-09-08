@@ -11,25 +11,16 @@ namespace Fcds\Ivvy\Model;
 class CustomField extends BaseModel
 {
     public $fieldId;
+    public $displayName;
     public $value;
 
     /**
      * Construct a new CustomField object
-     *
-     * keys:
-     * <pre>
-     * fieldId (integer)
-     * value (string)
-     * </pre>
-     *
-     * @param array $props
      */
-    public function __construct(array $props = [])
+    public function __construct(string $fieldId, string $displayName, string $value)
     {
-        foreach ($props as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
+        $this->fieldId     = $fieldId;
+        $this->displayName = $displayName;
+        $this->value       = $value;
     }
 }

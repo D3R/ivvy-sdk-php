@@ -8,6 +8,7 @@ use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
 use Fcds\Ivvy\Model\Address;
+use Fcds\Ivvy\Model\Contact;
 
 /**
  * Class: Ivvy
@@ -140,6 +141,30 @@ class Ivvy
                 $companyData = array_merge($singleResult, ['address' => new Address($singleResult['address'])]);
 
                 return new Company($companyData);
+            }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets all the contacts. It doesn't support pagination yet.
+     *
+     * @return array<Contact>|null
+     */
+    public function getContactList(): ?array
+    {
+        $requestUri = $this->createRequestUri('contact', 'getContactList');
+        $body = json_encode([]);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($contactData) {
+                return new Contact($contactData);
             }, $result['results']);
         } else {
             return null;

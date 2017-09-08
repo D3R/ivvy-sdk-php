@@ -41,10 +41,11 @@ class Contact extends BaseModel implements Validatable
      */
     public function __construct(array $props = [])
     {
-        foreach ($props as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
+        $this->id           = $props['id'] ?? 0;
+        $this->firstName    = $props['firstName'] ?? null;
+        $this->lastName     = $props['lastName'] ?? null;
+        $this->email        = $props['email'] ?? null;
+        $this->phone        = $props['phone'] ?? null;
+        $this->customFields = $props['customFields'] ?? null;
     }
 }
