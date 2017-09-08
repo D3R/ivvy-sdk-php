@@ -12,7 +12,7 @@ $ composer require fundacion-ciudad-del-saber/ivvy-sdk-php:^0.1
 
 ## How to use?
 
-This package exposes 2 high level APIs through the classes `Ivvy` and `JobFactory`. It is important that you understand this, as *this package is designed for you to work mainly these 2 classes* and the entities inside the `Fcds\Ivvy\Model` namespace.
+This package exposes 2 high level APIs through the classes `Ivvy` and `JobFactory`. It is important that you understand this, as **this package is designed for you to work mainly these 2 classes** and the entities inside the `Fcds\Ivvy\Model` namespace.
 
 The `Ivvy` class is your client class to communicate with iVvy. It exposes endpoints that directly map to a namespace's action (as per iVvys API 1.0 docs).
 
