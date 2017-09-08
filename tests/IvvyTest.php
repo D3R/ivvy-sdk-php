@@ -350,7 +350,6 @@ final class IvvyTest extends BaseTestCase
         $contacts = $this->ivvy->getContactList();
 
         $this->assertEquals($expectedResult, $contacts);
-
     }
 
     public function testGetContactListFail()
@@ -362,7 +361,6 @@ final class IvvyTest extends BaseTestCase
         $contacts = $this->ivvy->getContactList();
 
         $this->assertNull($contacts);
-
     }
 
     /**
