@@ -199,6 +199,28 @@ class Ivvy
     }
 
     /**
+     * Get a list of options for the refTypes
+     *
+     * @return array
+     */
+    public function getOptions(): ?array
+    {
+        $requestUri = $this->createRequestUri('invoice', 'getOptions');
+        $body = json_encode([]);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return $result;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Creates a request URI string from the passed namespace and action
      *
      * @param string $namespace

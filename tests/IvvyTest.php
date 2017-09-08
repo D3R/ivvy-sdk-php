@@ -289,6 +289,36 @@ final class IvvyTest extends BaseTestCase
         $this->assertEquals($expectedInvoice, $invoice);
     }
 
+    public function testGetOptionsSuccess()
+    {
+        $response = [
+            'invoiceRefTypes' => [],
+            'invoiceLineRefTypes' => [],
+            'paymentMethods' => [],
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $options = $this->ivvy->getOptions();
+
+        $this->assertEquals($response, $options);
+    }
+
+    public function testGetOptionsFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $options = $this->ivvy->getOptions();
+
+        $this->assertNull($options);
+
+    }
+
+
     public function testGetInvoiceFail()
     {
         $this->clientMock
