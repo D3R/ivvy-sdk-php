@@ -6,6 +6,7 @@ namespace Fcds\Ivvy;
 use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
+use Fcds\Ivvy\Model\InvoiceItem;
 
 /**
  * Class: Ivvy
@@ -161,6 +162,34 @@ class Ivvy
             return array_map(function ($invoiceData) {
                 return new Invoice($invoiceData);
             }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the invoice with the specified Id.
+     *
+     * @param int $id
+     *
+     * @return Invoice|null
+     */
+    public function getInvoice(int $id): ?Invoice
+    {
+        $requestUri = $this->createRequestUri('invoice', 'getInvoice');
+        $body = json_encode(compact('id'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            $invoiceData = array_merge($result, ['items' => array_map(function ($itemData) {
+                return new InvoiceItem($itemData);
+            }, $result['items'])]);
+
+            return new Invoice($invoiceData);
         } else {
             return null;
         }

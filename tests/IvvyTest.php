@@ -11,6 +11,7 @@ use Fcds\IvvyTest\BaseTestCase;
 use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
+use Fcds\Ivvy\Model\InvoiceItem;
 
 /**
  * Class: IvvyTest
@@ -235,6 +236,47 @@ final class IvvyTest extends BaseTestCase
 
         $this->assertNull($invoices);
     }
+
+    public function testGetInvoiceSuccess()
+    {
+        $response = [
+            'reference' => 'foo',
+            'items' => [
+                ['description' => 'bar'],
+                ['description' => 'baz'],
+            ],
+        ];
+
+        $expectedInvoice = new Invoice([
+            'reference' => 'foo',
+            'items' => [
+                new InvoiceItem(['description' => 'bar']),
+                new InvoiceItem(['description' => 'baz']),
+            ],
+        ]);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $invoice = $this->ivvy->getInvoice(100);
+
+        $this->assertEquals($expectedInvoice->reference, $invoice->reference);
+        $this->assertEquals($expectedInvoice->items[0]->description, $invoice->items[0]->description);
+        $this->assertEquals($expectedInvoice, $invoice);
+    }
+
+    public function testGetInvoiceFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $invoice = $this->ivvy->getInvoice(100);
+
+        $this->assertNull($invoice);
+    }
+
     /**
      * Utility method to generate a stub response for the Guzzle client
      * with the passed status code and body.
