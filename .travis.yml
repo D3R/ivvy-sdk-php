@@ -10,3 +10,13 @@ before_script:
 script:
   - vendor/bin/phpunit --testdox --coverage-text
   - vendor/bin/phpcs
+
+notifications:
+  slack:
+    rooms:
+      secure: GROAVeI8byX2lxW73rJKbF2VpREDRLn0YSQcuM8MhR9sBqCOZ0dgTgLW7o6GXQ5fb82zt7hlmd5yXYjaMC0GstorlAfni5ptZwiD8KvFofegf+lsANlsXRMXNhgOYNhbNLy0jJCYC23mntbRbc0zUqaayt7XZJJ52C+RiMFs8GHavldyXQAhCH7mr73/FwUulsrOj9oxT621xXE+JPvcgVv2DkuTKcGe9bUfAUuBhb/JTFTpMnogI3HDRWkh23yTDVFTezh8DWiCbU+8dj0doxO3q3FjqTrX4MGl8BOMeYP0MoYjDDQ9dbE40L+zGXgw0zKnQyBQ3xuknyGrcNDXNEYQ1QtrCMqsYbuLs1IyvfWPZJmANHKfrbtX5/aagXOUK5S7mGkmH3XMFyMGS/9HDxnqlfWfocWs/fip5MnxclebcLFuUqwcceqiguyxERAQoOsd74Bi8kLEJCs2xNSczbSw4Jc3h2VOPq2CpGwWZpByFFVQt1/oogLUvuMar2EsTfBlc9hnLT2keRgXB0xmJVwGxPIDejm+o6jvohSSJQll7LmwtCZeqwQAKafgyoChw3jlVHWb1tmp99Ok1JiJydpH6vQPE/raUH6QN5J1IbjWJF+TvF2tykqUwsvm+oQFnIeCUsMW6JsAWx1e/D5i3/ZFasIyMROr1/Z3+Sg6YEI=
+    template:
+      - "%{repository_name}: %{result} on branch %{branch}"
+      - "%{author}: %{commit_subject}"
+      - "Change view: %{compare_url}"
+      - "Build details: %{build_url}"
