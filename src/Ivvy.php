@@ -5,6 +5,7 @@ namespace Fcds\Ivvy;
 
 use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
+use Fcds\Ivvy\Model\Invoice;
 
 /**
  * Class: Ivvy
@@ -135,6 +136,30 @@ class Ivvy
         if ($response->getStatusCode() === 200) {
             return array_map(function ($companyData) {
                 return new Company($companyData);
+            }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets all the invoices. It doesn't support pagination yet.
+     *
+     * @return array<Invoice>|null
+     */
+    public function getInvoiceList(): ?array
+    {
+        $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
+        $body = json_encode([]);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($invoiceData) {
+                return new Invoice($invoiceData);
             }, $result['results']);
         } else {
             return null;

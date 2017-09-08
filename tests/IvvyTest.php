@@ -10,6 +10,7 @@ use Fcds\Ivvy\Signature;
 use Fcds\IvvyTest\BaseTestCase;
 use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
+use Fcds\Ivvy\Model\Invoice;
 
 /**
  * Class: IvvyTest
@@ -198,6 +199,42 @@ final class IvvyTest extends BaseTestCase
         $this->assertNull($companies);
     }
 
+    public function testGetInvoiceListSuccess()
+    {
+        $response = [
+            'results' => [
+                ['reference' => 'foo'],
+                ['reference' => 'bar'],
+            ],
+        ];
+
+        $expectedResult = [
+            new Invoice(['reference' => 'foo']),
+            new Invoice(['reference' => 'bar']),
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $invoices = $this->ivvy->getInvoiceList();
+
+        $this->assertCount(2, $invoices);
+        $this->assertEquals($expectedResult[0]->reference, $invoices[0]->reference);
+        $this->assertEquals($expectedResult[1]->reference, $invoices[1]->reference);
+        $this->assertEquals($expectedResult, $invoices);
+    }
+
+    public function testGetInvoiceListFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $invoices = $this->ivvy->getInvoiceList();
+
+        $this->assertNull($invoices);
+    }
     /**
      * Utility method to generate a stub response for the Guzzle client
      * with the passed status code and body.
