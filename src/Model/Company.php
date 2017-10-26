@@ -48,6 +48,7 @@ class Company extends BaseModel implements Validatable
         $this->businessNumber = $props['businessNumber'] ?? null;
         $this->phone = $props['phone'] ?? null;
         $this->fax = $props['fax'] ?? null;
+        $this->website = $props['website'] ?? null;
         $this->email = $props['email'] ?? null;
         $this->address = $props['address'] ?? null;
     }
