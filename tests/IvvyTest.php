@@ -14,6 +14,7 @@ use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
 use Fcds\Ivvy\Model\Address;
 use Fcds\Ivvy\Model\Contact;
+use Fcds\Ivvy\Model\Booking;
 
 /**
  * Class: IvvyTest
@@ -261,6 +262,43 @@ final class IvvyTest extends BaseTestCase
         $this->assertNull($invoices);
     }
 
+    public function testGetInvoiceListFromDateSuccess()
+    {
+        $response = [
+            'results' => [
+                ['reference' => 'foo'],
+                ['reference' => 'bar'],
+            ],
+        ];
+
+        $expectedResult = [
+            new Invoice(['reference' => 'foo']),
+            new Invoice(['reference' => 'bar']),
+        ];
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $invoices = $this->ivvy->getInvoiceListFromDate('2017-01-01');
+
+        $this->assertCount(2, $invoices);
+        $this->assertEquals($expectedResult[0]->reference, $invoices[0]->reference);
+        $this->assertEquals($expectedResult[1]->reference, $invoices[1]->reference);
+        $this->assertEquals($expectedResult, $invoices);
+    }
+
+    public function testGetInvoiceListFromDateFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $invoices = $this->ivvy->getInvoiceListFromDate('2017-01-01');
+
+        $this->assertNull($invoices);
+    }
+
     public function testGetInvoiceSuccess()
     {
         $response = [
@@ -297,6 +335,52 @@ final class IvvyTest extends BaseTestCase
             ->willReturn($this->generateStubResponse(400));
 
         $invoice = $this->ivvy->getInvoice(100);
+
+        $this->assertNull($invoice);
+    }
+
+    public function testGetBookingSuccess()
+    {
+        $response = [
+            'id' => 100,
+            'venueId' => 100,
+            'code' => 'bar',
+            'name' => 'baz',
+            'company' => 100,
+            'contact' => 100
+        ];
+
+        $expectedBooking = new Booking([
+            'id' => 100,
+            'venueId' => 100,
+            'code' => 'bar',
+            'name' => 'baz',
+            'company' => 100,
+            'contact' => 100
+        ]);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $invoice = $this->ivvy->getBooking(100);
+
+        $this->assertEquals($expectedBooking->id, $invoice->id);
+        $this->assertEquals($expectedBooking->venueId, $invoice->venueId);
+        $this->assertEquals($expectedBooking->code, $invoice->code);
+        $this->assertEquals($expectedBooking->name, $invoice->name);
+        $this->assertEquals($expectedBooking->company, $invoice->company);
+        $this->assertEquals($expectedBooking->contact, $invoice->contact);
+        $this->assertEquals($expectedBooking, $invoice);
+    }
+
+    public function testGetBookingFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $invoice = $this->ivvy->getBooking(100);
 
         $this->assertNull($invoice);
     }

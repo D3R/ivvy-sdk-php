@@ -9,6 +9,7 @@ use Fcds\Ivvy\Model\Invoice;
 use Fcds\Ivvy\Model\InvoiceItem;
 use Fcds\Ivvy\Model\Address;
 use Fcds\Ivvy\Model\Contact;
+use Fcds\Ivvy\Model\Booking;
 
 /**
  * Class: Ivvy
@@ -194,7 +195,36 @@ class Ivvy
             return null;
         }
     }
+    /**
+     * Gets all the invoices. It doesn't support pagination yet.
+     *
+     * @param string $fromModifiedDate
+     *
+     * @return array<Invoice>|null
+     */
+    public function getInvoiceListFromDate(?string $fromModifiedDate): ?array
+    {
+        $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
+        if(!is_null($fromModifiedDate)) {
+            $filter = compact('fromModifiedDate');
+            $body = json_encode(compact('filter'));
+        } else {
+            $body = json_encode([]);
+        }
+        $headers = $this->createHeaders($body, $requestUri);
 
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($invoiceData) {
+                return new Invoice($invoiceData);
+            }, $result['results']);
+        } else {
+            return null;
+        }
+    }
     /**
      * Get the invoice with the specified Id.
      *
@@ -218,6 +248,30 @@ class Ivvy
             }, $result['items'])]);
 
             return new Invoice($invoiceData);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the booking with the specified Id.
+     *
+     * @param int $id
+     *
+     * @return Booking|null
+     */
+    public function getBooking(int $id): ?Booking
+    {
+        $requestUri = $this->createRequestUri('venue', 'getBooking');
+        $body = json_encode(compact('id'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return new Booking($result);
         } else {
             return null;
         }
