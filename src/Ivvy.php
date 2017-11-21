@@ -205,7 +205,7 @@ class Ivvy
     public function getInvoiceListFromDate(?string $fromModifiedDate): ?array
     {
         $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
-        if(!is_null($fromModifiedDate)) {
+        if (!is_null($fromModifiedDate)) {
             $filter = compact('fromModifiedDate');
             $body = json_encode(compact('filter'));
         } else {
