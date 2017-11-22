@@ -67,8 +67,8 @@ class Booking extends BaseModel
         $this->venueId = $props['venueId'] ?? 0;
         $this->code = $props['code'] ?? null;
         $this->name = $props['name'] ?? null;
-        $this->company = $props['company'] ?? 0;
-        $this->contact = $props['contact'] ?? 0;
+        $this->company = $props['company']['id'] ?? 0;
+        $this->contact = $props['contact']['id'] ?? 0;
         $this->currentStatus = $props['currentStatus'] ?? 0;
         $this->totalAmount = $props['totalAmount'] ?? 0;
         $this->totalTaxAmount = $props['totalTaxAmount'] ?? 0;
