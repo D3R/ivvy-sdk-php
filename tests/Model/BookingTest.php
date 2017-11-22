@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace Fcds\IvvyTest\Model;
 
 use Fcds\Ivvy\Model\Booking;
+use Fcds\Ivvy\Model\Address;
+use Fcds\Ivvy\Model\Contact;
+use Fcds\Ivvy\Model\Company;
+use Fcds\Ivvy\Model\CustomField;
 use Fcds\IvvyTest\BaseTestCase;
 
 /**
@@ -17,38 +21,41 @@ class BookingTest extends BaseTestCase
 {
     public function testInstantiateWithArguments()
     {
+        $company = [new Company()];
+        $contact = [new Contact()];
+
         $booking = new Booking([
             'id' => 100,
             'venueId' => 100,
             'code' => 'bar',
             'name' => 'baz',
-            'company' => 100,
-            'contact' => 100,
+            'company' => $company,
+            'contact' => $contact,
             'currentStatus' => 1,
             'totalAmount' => '100.1',
             'totalTaxAmount' => '100.2',
             'amountOutstanding' => '100.2',
             'accountTimezone' => 'America/Bogota',
             'venueTimezone' => 'America/Panama',
-            'createdDate'    => '2017-02-22',
-            'modifiedDate'   => '2017-02-22',
-            'dateEventStart'    => '2017-02-22',
-            'dateEventEnd'   => '2017-02-22',
-            'isAccommIncluded'   => true,
-            'dateAccomStart'   => '2017-02-22',
-            'dateAccomEnd'   => '2017-02-22',
-            'hasPackages'   => true,
-            'decisionDate'   => '2017-02-22',
-            'isBeoFinalised'   => true,
-            'beoFinalisedDate'   => '2017-02-22',
+            'createdDate' => '2017-02-22',
+            'modifiedDate' => '2017-02-22',
+            'dateEventStart' => '2017-02-22',
+            'dateEventEnd' => '2017-02-22',
+            'isAccommIncluded' => true,
+            'dateAccomStart' => '2017-02-22',
+            'dateAccomEnd' => '2017-02-22',
+            'hasPackages' => true,
+            'decisionDate' => '2017-02-22',
+            'isBeoFinalised' => true,
+            'beoFinalisedDate' => '2017-02-22'
         ]);
 
         $this->assertEquals(100, $booking->id);
         $this->assertEquals(100, $booking->venueId);
         $this->assertEquals('bar', $booking->code);
         $this->assertEquals('baz', $booking->name);
-        $this->assertEquals(100, $booking->company);
-        $this->assertEquals(100, $booking->contact);
+        $this->assertEquals(0, $booking->company);
+        $this->assertEquals(0, $booking->contact);
         $this->assertEquals(1, $booking->currentStatus);
         $this->assertEquals(100.1, $booking->totalAmount);
         $this->assertEquals(100.2, $booking->totalTaxAmount);
