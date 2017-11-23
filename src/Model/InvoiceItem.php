@@ -7,7 +7,7 @@ class InvoiceItem extends BaseModel
 {
     public $description;
     public $quantity;
-    public $unityCost;
+    public $unitCost;
     public $totalCost;
     public $totalTaxCost;
     public $amountPaid;
@@ -20,7 +20,7 @@ class InvoiceItem extends BaseModel
      * <pre>
      * description (string)
      * quantity (int)
-     * unityCost (string)
+     * unitCost (string)
      * totalCost (string)
      * totalTaxCost (string)
      * amountPaid (string)
@@ -33,7 +33,7 @@ class InvoiceItem extends BaseModel
     {
         $this->description  = $props['description'] ?? null;
         $this->quantity     = $props['quantity'] ?? 0;
-        $this->unityCost    = $props['unityCost'] ?? null;
+        $this->unitCost    = $props['unitCost'] ?? null;
         $this->totalCost    = $props['totalCost'] ?? null;
         $this->totalTaxCost = $props['totalTaxCost'] ?? null;
         $this->amountPaid   = $props['amountPaid'] ?? null;
