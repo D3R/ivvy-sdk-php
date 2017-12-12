@@ -225,6 +225,67 @@ final class IvvyTest extends BaseTestCase
         $this->assertNull($companies);
     }
 
+    public function testGetCompanySuccess()
+    {
+        $response = [
+            'id' => 100,
+            'businessName' => 'foo',
+            'externalId' => 0,
+            'tradingName' => 'bar',
+            'businessNumber' => 100,
+            'phone' => 100,
+            'fax' => 100,
+            'website' => 'www.foo-bar.com',
+            'email' => 'email@foo-bar.com',
+            'address' => [
+                        'line1' => 'bar1',
+                    ]
+        ];
+
+        $expectedCompany = new Company([
+            'id' => 100,
+            'businessName' => 'foo',
+            'externalId' => 0,
+            'tradingName' => 'bar',
+            'businessNumber' => 100,
+            'phone' => 100,
+            'fax' => 100,
+            'website' => 'www.foo-bar.com',
+            'email' => 'email@foo-bar.com',
+            'address' => new Address([
+                    'line1' => 'bar1',
+                ])
+        ]);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $company = $this->ivvy->getCompany(100);
+
+        $this->assertEquals($expectedCompany->id, $company->id);
+        $this->assertEquals($expectedCompany->businessName, $company->businessName);
+        $this->assertEquals($expectedCompany->externalId, $company->externalId);
+        $this->assertEquals($expectedCompany->tradingName, $company->tradingName);
+        $this->assertEquals($expectedCompany->businessNumber, $company->businessNumber);
+        $this->assertEquals($expectedCompany->phone, $company->phone);
+        $this->assertEquals($expectedCompany->fax, $company->fax);
+        $this->assertEquals($expectedCompany->website, $company->website);
+        $this->assertEquals($expectedCompany->email, $company->email);
+        $this->assertEquals($expectedCompany->address->line1, $company->address['line1']);
+    }
+
+    public function testGetCompanyFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $company = $this->ivvy->getCompany(100);
+
+        $this->assertNull($company);
+    }
+
     public function testGetInvoiceListSuccess()
     {
         $response = [
