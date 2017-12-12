@@ -30,6 +30,7 @@ class CompanyTest extends BaseTestCase
             'website' => 'qux.com',
             'email' => 'quux@mail.com',
             'address' => $address,
+            'modifiedDate' => '2017-10-27 22:28:08 UTC'
         ]);
 
         $this->assertEquals(100, $company->id);
@@ -41,6 +42,7 @@ class CompanyTest extends BaseTestCase
         $this->assertEquals('+999 999 999', $company->fax);
         $this->assertEquals('quux@mail.com', $company->email);
         $this->assertEquals($address, $company->address);
+        $this->assertEquals('2017-10-27 22:28:08 UTC', $company->modifiedDate);
     }
 
     public function testInstantiateWithDefaultValues()
@@ -56,5 +58,6 @@ class CompanyTest extends BaseTestCase
         $this->assertNull($company->fax);
         $this->assertNull($company->email);
         $this->assertNull($company->address);
+        $this->assertNull($company->modifiedDate);
     }
 }
