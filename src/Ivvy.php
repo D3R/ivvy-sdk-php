@@ -123,7 +123,7 @@ class Ivvy
     }
 
     /**
-     * Gets all the companies. It doesn't support pagination yet.
+     * Gets all the companies.
      *
      * @return array<Company>|null
      */
@@ -143,6 +143,63 @@ class Ivvy
 
                 return new Company($companyData);
             }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+    /**
+     * Gets all the companies.
+     *
+     * @param int $perPage - number of Companies per page
+     * @param int $start - start page
+     *
+     * @return array<Company>|null
+     */
+    public function getCompanyListPage(?int $perPage, ?int $start): ?array
+    {
+        if (is_null($perPage)) {
+            $perPage = 100;
+        }
+        if (is_null($start)) {
+            $start = 0;
+        }
+        $requestUri = $this->createRequestUri('contact', 'getCompanyList');
+        $body = json_encode(compact('perPage', 'start'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($singleResult) {
+                $companyData = array_merge($singleResult, ['address' => new Address($singleResult['address'])]);
+
+                return new Company($companyData);
+            }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+    /**
+     * Get the company with the specified Id.
+     *
+     * @param int $id
+     *
+     * @return company|null
+     */
+    public function getCompany(int $id): ?Company
+    {
+        $requestUri = $this->createRequestUri('contact', 'getCompany');
+        $body = json_encode(compact('id'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return new Company($result);
         } else {
             return null;
         }
