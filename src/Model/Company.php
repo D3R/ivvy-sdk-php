@@ -19,6 +19,7 @@ class Company extends BaseModel implements Validatable
     public $website;
     public $email;
     public $address;
+    public $modifiedDate;
 
     /**
      * Construct a new Company object
@@ -51,5 +52,6 @@ class Company extends BaseModel implements Validatable
         $this->website = $props['website'] ?? null;
         $this->email = $props['email'] ?? null;
         $this->address = $props['address'] ?? null;
+        $this->modifiedDate = $props['modifiedDate'] ?? null;
     }
 }
