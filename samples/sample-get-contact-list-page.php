@@ -8,12 +8,12 @@ $start = $argv[4];
 
 $ivvy = (new Fcds\Ivvy\IvvyFactory)->newInstance($apiKey, $apiSecret);
 
-$companies = $ivvy->getCompanyListPage($perPage, $start);
+$contacts = $ivvy->getContactListPage($perPage, $start);
 
-if ($companies) {
-    echo implode("\n", array_map(function($company) {
-        return $company->businessName;
-    }, $companies));
+if ($contacts) {
+    echo implode("\n", array_map(function($contact) {
+        return ($contact->firstName);
+    }, $contacts));
 } else {
     echo "Couldn't connect to the API server. Check iVvy's credentials\n";
     exit(1);

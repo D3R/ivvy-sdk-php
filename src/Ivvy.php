@@ -229,6 +229,38 @@ class Ivvy
         }
     }
     /**
+     * Gets all the contacts.
+     *
+     * @param int $perPage - number of Contacts per page
+     * @param int $start - start page
+     *
+     * @return array<Company>|null
+     */
+    public function getContactListPage(?int $perPage, ?int $start): ?array
+    {
+        if (is_null($perPage)) {
+            $perPage = 100;
+        }
+        if (is_null($start)) {
+            $start = 0;
+        }
+        $requestUri = $this->createRequestUri('contact', 'getContactList');
+        $body = json_encode(compact('perPage', 'start'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return array_map(function ($contactData) {
+                return new Contact($contactData);
+            }, $result['results']);
+        } else {
+            return null;
+        }
+    }
+    /**
      * Get the contact with the specified Id.
      *
      * @param int $id
