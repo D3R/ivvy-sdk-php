@@ -23,6 +23,8 @@ class Contact extends BaseModel implements Validatable
     public $email;
     public $phone;
     public $customFields;
+    public $externalId;
+    public $modifiedDate;
 
     /**
      * Construct a new Contact object
@@ -47,5 +49,8 @@ class Contact extends BaseModel implements Validatable
         $this->email        = $props['email'] ?? null;
         $this->phone        = $props['phone'] ?? null;
         $this->customFields = $props['customFields'] ?? null;
+        $this->companies    = $props['companies'] ?? null;
+        $this->externalId   = $props['externalId'] ?? null;
+        $this->modifiedDate = $props['modifiedDate'] ?? null;
     }
 }

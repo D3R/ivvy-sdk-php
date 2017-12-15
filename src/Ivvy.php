@@ -228,6 +228,29 @@ class Ivvy
             return null;
         }
     }
+    /**
+     * Get the contact with the specified Id.
+     *
+     * @param int $id
+     *
+     * @return contact|null
+     */
+    public function getContact(int $id): ?Contact
+    {
+        $requestUri = $this->createRequestUri('contact', 'getContact');
+        $body = json_encode(compact('id'));
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return new Contact($result);
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Gets all the invoices. It doesn't support pagination yet.

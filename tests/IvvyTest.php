@@ -508,6 +508,54 @@ final class IvvyTest extends BaseTestCase
         $this->assertNull($contacts);
     }
 
+    public function testGetContactSuccess()
+    {
+        $response = [
+            'id' => 100,
+            'firstName' => 'foo',
+            'lastName' => 'bar',
+            'phone' => 100,
+            'email' => 'email@foo-bar.com',
+            'externalId' => '200',
+            'modifiedDate' => '2017-10-12 00:00:00'
+        ];
+
+        $expectedContact = new Contact([
+            'id' => 100,
+            'firstName' => 'foo',
+            'lastName' => 'bar',
+            'phone' => 100,
+            'email' => 'email@foo-bar.com',
+            'externalId' => '200',
+            'modifiedDate' => '2017-10-12 00:00:00'
+        ]);
+
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(200, json_encode($response)));
+
+        $contact = $this->ivvy->getContact(100);
+
+        $this->assertEquals($expectedContact->id, $contact->id);
+        $this->assertEquals($expectedContact->firstName, $contact->firstName);
+        $this->assertEquals($expectedContact->lastName, $contact->lastName);
+        $this->assertEquals($expectedContact->phone, $contact->phone);
+        $this->assertEquals($expectedContact->email, $contact->email);
+        $this->assertEquals($expectedContact->externalId, $contact->externalId);
+        $this->assertEquals($expectedContact->modifiedDate, $contact->modifiedDate);
+    }
+
+    public function testGetContactFail()
+    {
+        $this->clientMock
+            ->method('request')
+            ->willReturn($this->generateStubResponse(400));
+
+        $contact = $this->ivvy->getContact(100);
+
+        $this->assertNull($contact);
+    }
+
     /**
      * Utility method to generate a stub response for the Guzzle client
      * with the passed status code and body.
