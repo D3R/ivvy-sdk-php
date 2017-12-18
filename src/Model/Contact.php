@@ -23,6 +23,7 @@ class Contact extends BaseModel implements Validatable
     public $email;
     public $phone;
     public $customFields;
+    public $companies;
     public $externalId;
     public $modifiedDate;
 
