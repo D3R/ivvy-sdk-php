@@ -260,6 +260,7 @@ class Ivvy
             return null;
         }
     }
+
     /**
      * Get the contact with the specified Id.
      *
@@ -279,6 +280,66 @@ class Ivvy
 
         if ($response->getStatusCode() === 200) {
             return new Contact($result);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Create or update contact
+     *
+     * @param array $data
+     * @param int $id
+     *
+     * @return contact|null
+     */
+    public function addOrUpdateContact(array $data, int $id = null): ?Contact
+    {
+        $requestUri = $this->createRequestUri('contact', 'addOrUpdateContact');
+        if ($id) {
+            $data['id'] = $id;
+        }
+        $body = json_encode($data);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return new Contact($result);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Create or update Opportunity
+     * 
+     * @see https://developer.ivvy.com/venues/add-or-update-opportunity
+     *
+     * @param int $venueId
+     * @param array $data
+     * @param int $id
+     *
+     * @return boolean|null
+     */
+    public function addOrUpdateOpportunity(int $venueId, array $data, int $id = null)
+    {
+        $requestUri = $this->createRequestUri('venue', 'addOrUpdateOpportunity');
+        $data['venueId'] = $venueId;
+        if ($id) {
+            $data['id'] = $id;
+        }
+        $body = json_encode($data);
+        $headers = $this->createHeaders($body, $requestUri);
+
+        $response = $this->client->request('POST', $requestUri, compact('body', 'headers'));
+
+        $result = json_decode((string) $response->getBody(), true);
+
+        if ($response->getStatusCode() === 200) {
+            return $result['success'] ?? false;
         } else {
             return null;
         }
