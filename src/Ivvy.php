@@ -70,7 +70,7 @@ class Ivvy
      * @param array $jobs
      * @return string|null - the async Id
      */
-    public function run(array $jobs): ?string
+    public function run(array $jobs): string
     {
         $requestUri = $this->createRequestUri('batch', 'run');
         $body = json_encode([
@@ -127,7 +127,7 @@ class Ivvy
      *
      * @return array<Company>|null
      */
-    public function getCompanyList(): ?array
+    public function getCompanyList(): array
     {
         $requestUri = $this->createRequestUri('contact', 'getCompanyList');
         $body = json_encode([]);
@@ -155,7 +155,7 @@ class Ivvy
      *
      * @return array<Company>|null
      */
-    public function getCompanyListPage(?int $perPage, ?int $start): ?array
+    public function getCompanyListPage(int $perPage, int $start): array
     {
         if (is_null($perPage)) {
             $perPage = 100;
@@ -188,7 +188,7 @@ class Ivvy
      *
      * @return company|null
      */
-    public function getCompany(int $id): ?Company
+    public function getCompany(int $id): Company
     {
         $requestUri = $this->createRequestUri('contact', 'getCompany');
         $body = json_encode(compact('id'));
@@ -210,7 +210,7 @@ class Ivvy
      *
      * @return array<Contact>|null
      */
-    public function getContactList(): ?array
+    public function getContactList(): array
     {
         $requestUri = $this->createRequestUri('contact', 'getContactList');
         $body = json_encode([]);
@@ -236,7 +236,7 @@ class Ivvy
      *
      * @return array<Company>|null
      */
-    public function getContactListPage(?int $perPage, ?int $start): ?array
+    public function getContactListPage(int $perPage, int $start): array
     {
         if (is_null($perPage)) {
             $perPage = 100;
@@ -268,7 +268,7 @@ class Ivvy
      *
      * @return contact|null
      */
-    public function getContact(int $id): ?Contact
+    public function getContact(int $id): Contact
     {
         $requestUri = $this->createRequestUri('contact', 'getContact');
         $body = json_encode(compact('id'));
@@ -293,7 +293,7 @@ class Ivvy
      *
      * @return contact|null
      */
-    public function addOrUpdateContact(array $data, int $id = null): ?Contact
+    public function addOrUpdateContact(array $data, int $id = null): Contact
     {
         $requestUri = $this->createRequestUri('contact', 'addOrUpdateContact');
         if ($id) {
@@ -350,7 +350,7 @@ class Ivvy
      *
      * @return array<Invoice>|null
      */
-    public function getInvoiceList(): ?array
+    public function getInvoiceList(): array
     {
         $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
         $body = json_encode([]);
@@ -375,7 +375,7 @@ class Ivvy
      *
      * @return array<Invoice>|null
      */
-    public function getInvoiceListFromDate(?string $fromModifiedDate): ?array
+    public function getInvoiceListFromDate(string $fromModifiedDate): array
     {
         $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
         if (!is_null($fromModifiedDate)) {
@@ -405,7 +405,7 @@ class Ivvy
      *
      * @return Invoice|null
      */
-    public function getInvoice(int $id): ?Invoice
+    public function getInvoice(int $id): Invoice
     {
         $requestUri = $this->createRequestUri('invoice', 'getInvoice');
         $body = json_encode(compact('id'));
@@ -433,7 +433,7 @@ class Ivvy
      *
      * @return Booking|null
      */
-    public function getBooking(int $id): ?Booking
+    public function getBooking(int $id): Booking
     {
         $requestUri = $this->createRequestUri('venue', 'getBooking');
         $body = json_encode(compact('id'));
@@ -455,7 +455,7 @@ class Ivvy
      *
      * @return array
      */
-    public function getOptions(): ?array
+    public function getOptions(): array
     {
         $requestUri = $this->createRequestUri('invoice', 'getOptions');
         $body = json_encode([]);
