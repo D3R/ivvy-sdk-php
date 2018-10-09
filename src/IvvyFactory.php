@@ -7,9 +7,11 @@ use Fcds\Ivvy\Ivvy;
 
 final class IvvyFactory
 {
-    public function newInstance(string $apiKey, string $apiSecret): Ivvy
+    public function newInstance(string $apiKey, string $apiSecret, $region = null): Ivvy
     {
         $signature = new Signature;
+
+        $baseUri = Ivvy::makeBaseUri($region);
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => Ivvy::BASE_URI,
