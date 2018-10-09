@@ -16,7 +16,7 @@ use Fcds\Ivvy\Model\Booking;
  */
 class Ivvy
 {
-    const HOST = 'api.us-west-2.ivvy.com';
+    const HOST = 'api.eu-west-2.ivvy.com';
     const API_VERSION = '1.0';
     const BASE_URI = "https://" . self::HOST;
 
