@@ -10,11 +10,11 @@ final class IvvyFactory
     public function newInstance(string $apiKey, string $apiSecret, $region = null): Ivvy
     {
         $signature = new Signature;
-
+        
         $baseUri = Ivvy::makeBaseUri($region);
 
         $client = new \GuzzleHttp\Client([
-            'base_uri' => Ivvy::BASE_URI,
+            'base_uri' => $baseUri,
             'timeout'  => 5.0,
         ]);
 

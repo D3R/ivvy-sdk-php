@@ -262,7 +262,7 @@ class Ivvy
      *
      * @return array<Company>|null
      */
-    public function getContactListPage(int $perPage, int $start)
+    public function getContactListPage($perPage, $start)
     {
         if (is_null($perPage)) {
             $perPage = 100;
@@ -401,7 +401,7 @@ class Ivvy
      *
      * @return array<Invoice>|null
      */
-    public function getInvoiceListFromDate(string $fromModifiedDate)
+    public function getInvoiceListFromDate($fromModifiedDate)
     {
         $requestUri = $this->createRequestUri('invoice', 'getInvoiceList');
         if (!is_null($fromModifiedDate)) {
