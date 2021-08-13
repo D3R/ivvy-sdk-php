@@ -341,7 +341,7 @@ class Ivvy
 
     /**
      * Create or update Opportunity
-     * 
+     *
      * @see https://developer.ivvy.com/venues/add-or-update-opportunity
      *
      * @param int $venueId
@@ -550,6 +550,6 @@ class Ivvy
      */
     protected function createIvvyDate(): string
     {
-        return date('Y-m-d hh:mm:ss');
+        return date('Y-m-d h:m:s');
     }
 }
