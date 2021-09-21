@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Fcds\Ivvy;
 
+use DateTime;
+use DateTimeZone;
 use GuzzleHttp\Client;
 use Fcds\Ivvy\Model\Company;
 use Fcds\Ivvy\Model\Invoice;
@@ -550,6 +552,11 @@ class Ivvy
      */
     protected function createIvvyDate(): string
     {
-        return date('Y-m-d h:m:s');
+        // return date('Y-m-d h:m:s');
+
+        $dt = new DateTime();
+        $dt->setTimezone(new DateTimeZone('UTC'));
+
+        return $dt->format('Y-m-d h:m:s');
     }
 }
