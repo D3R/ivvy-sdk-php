@@ -557,6 +557,6 @@ class Ivvy
         $dt = new DateTime();
         $dt->setTimezone(new DateTimeZone('UTC'));
 
-        return $dt->format('Y-m-d h:m:s');
+        return $dt->format('Y-m-d H:i:s');
     }
 }
