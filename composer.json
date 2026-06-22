@@ -3,7 +3,7 @@
     "description": "A PHP 7.1 compatible, PSR-4 and PSR-2 compliant SDK to work with iVvy's API 1.0",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "^7.0",
         "respect/validation": "^1.1"
     },
     "require-dev": {
